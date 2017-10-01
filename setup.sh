@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ "$EUID" -ne 0 ]; then
-    echo "This script mus be run with root permissions"
+    echo "This script must be run with root permissions"
     exit
 fi
 
