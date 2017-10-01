@@ -20,3 +20,4 @@ docker build -t 'compiler_machine' - < Dockerfile
 
 ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 chmod +x ${ROOT}/lib/runner.sh
+mkdir -p ${ROOT}/store/code
