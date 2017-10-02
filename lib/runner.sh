@@ -14,7 +14,7 @@ mkdir ${MACHINE} && cp ${STORE}/default/* ${MACHINE}
 cp ${CODE} ${MACHINE}/code
 chmod 777 -R ${MACHINE}
 
-MACHINE_ID=$(docker run -d --memory=40m --cpus=0.25 -it -v ${MACHINE}:/code compiler_machine /code/run.sh ${2} code)
+MACHINE_ID=$(docker run -d --memory=40m --cpus=0.25 -v ${MACHINE}:/code compiler_machine /code/run.sh ${2} code)
 
 if [ $(timeout 5s docker wait ${MACHINE_ID}) ]; then
     cat ${MACHINE}/time
