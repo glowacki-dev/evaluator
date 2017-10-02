@@ -12,11 +12,14 @@ CODE="${STORE}/code/${1}"
 
 mkdir ${MACHINE} && cp ${STORE}/default/* ${MACHINE}
 cp ${CODE} ${MACHINE}/code
-chmod 777 -R ${MACHINE}
+chmod 744 -R ${MACHINE}
 
-MACHINE_ID=$(docker run -d --memory=40m --cpus=0.25 -v ${MACHINE}:/code compiler_machine /code/run.sh ${2} code)
+MACHINE_ID=$(docker run -d --read-only --memory=40m --cpus=0.25 -v ${MACHINE}:/code compiler_machine /code/run.sh ${2} code)
 
-if [ $(timeout 5s docker wait ${MACHINE_ID}) ]; then
+# Because executor user doesn't have write access, so the only file that will be created is `time`
+# This file is created at the very end of our script, so we use it to know when we're done
+# It's also possible to do it with `docker wait` and timeout, but it was about 100ms slower
+if inotifywait -t 5 -qq -e create ${MACHINE}; then
     cat ${MACHINE}/time
 else
     echo "-1"

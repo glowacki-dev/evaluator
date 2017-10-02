@@ -5,7 +5,7 @@ exec 2> /code/errors
 
 START=$(date +%s%3N)
 
-$1 /code/$2
+sudo -u executor $1 /code/$2
 
 END=$(date +%s%3N)
 
