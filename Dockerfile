@@ -1,5 +1,10 @@
 FROM ubuntu:16.04
 
+ARG UID
+ARG GID
+ENV UID ${UID:-1000}
+ENV GID ${GID:-1000}
+
 RUN apt-get update && apt-get install -y \
     bc \
     curl \
@@ -15,8 +20,8 @@ RUN apt-get update && apt-get install -y \
 
 # We need two users. Guardian is the one that has r/w access to the mounted directory
 # while executor should only be able to read source file wihtout having write access anywhere
-
-RUN useradd guardian && echo "guardian:guardian" | chpasswd && adduser guardian sudo
+RUN groupadd -g $GID guardian
+RUN useradd -u $UID -g $GID guardian && adduser guardian sudo
 RUN useradd executor
 RUN echo "guardian ALL=(executor) NOPASSWD: ALL" >> /etc/sudoers
 

@@ -5,6 +5,8 @@ if [ "$EUID" -ne 0 ]; then
     exit
 fi
 
+USER=$(who am i | awk '{print $1}')
+
 apt-get update
 apt-get install apt-transport-https ca-certificates curl software-properties-common inotify-tools
 
@@ -16,7 +18,7 @@ apt-get install docker-ce
 
 usermod -aG docker ${USER}
 
-docker build -t 'compiler_machine' - < Dockerfile
+docker build --build-arg UID=$(id ${USER} -u) --build-arg GID=$(id ${USER} -g) -t 'compiler_machine' - < Dockerfile
 
 ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 chmod +x ${ROOT}/lib/runner.sh ${ROOT}/store/default/run.sh
