@@ -61,3 +61,6 @@ gen
 .vagrant/
 *.log
 Vagrantfile
+/store/*
+!/store/code/
+!/store/default/
