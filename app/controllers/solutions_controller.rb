@@ -1,3 +1,5 @@
+require_relative 'base_controller'
+
 class SolutionsController < BaseController
   LANGUAGES = %w(ruby python python3 nodejs).freeze
 
